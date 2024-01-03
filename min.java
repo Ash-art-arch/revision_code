@@ -1,54 +1,29 @@
+package revision_code;
+import java.util.*;
+
 class Solution {
-    public static int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
-        int arr1[] = new int[uniqueCnt1];
-        int arr2[] = new int[uniqueCnt2];
-        int i = 0;
-        int j = 0;
-        int x = 1;
-        int y = 1;
-
-        while (i < uniqueCnt1 && j < uniqueCnt2) {
-            if (x % divisor1 != 0) {
-                arr1[i++] = x;
+    public List<String> findHighAccessEmployees(List<List<String>> access_times) {
+        List<String>ans=new ArrayList<>();
+        for(int i=0;i<access_times.size();i++){
+            String name=access_times.get(i).get(0);
+            String time =access_times.get(i).get(1);
+            int currentTime= Integer.parseInt(time)+2400;
+            int count=0;
+            for(int j=0;j<access_times.size();j++){
+                String upname=access_times.get(j).get(0);
+                if(i!=j&&name.equals(upname)){
+                    String uptime=access_times.get(j).get(1);
+                    int upTime= Integer.parseInt(uptime)+2400;
+                    if(upTime!=currentTime&&Math.abs(upTime-currentTime)<100){
+                        count++;
+                    }
+                }
             }
-
-            if (y % divisor2 != 0) {
-                arr2[j++] = y;
+            if (count>=3&&ans.indexOf(name)==-1) {
+                ans.add(name);
             }
-
-            x++;
-            y++;
+            
         }
-
-        while (i < uniqueCnt1) {
-            if (x % divisor1 != 0) {
-                arr1[i++] = x;
-            }
-            x++;
-        }
-
-        while (j < uniqueCnt2) {
-            if (y % divisor2 != 0) {
-                arr2[j++] = y;
-            }
-            y++;
-        }
-    
-        int big1 = arr1[arr1.length - 1];
-        int big2 = arr2[arr2.length - 1];
-
-        if (big1 > big2) {
-            return big1;
-        }
-        return big2;
-    }
-
-    public static void main(String[] args) {
-        int divisor1 = 3;
-        int divisor2 = 5;
-        int uniqueCnt1 = 2;
-        int uniqueCnt2 = 3;
-        System.out.println(minimizeSet(divisor1, divisor2, uniqueCnt1, uniqueCnt2));
+        return ans;
     }
 }
-
